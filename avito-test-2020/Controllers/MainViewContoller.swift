@@ -13,21 +13,14 @@ protocol APIControllerDelegate {
 }
 
 final class MainViewContoller: UIViewController, APIControllerDelegate {
-    var mainView: MainView?
-    var navBarItem = UINavigationItem()
     var contents: Contents?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         APIController(delegate: self).getGeneralData()
+        view = MainView(frame: UIScreen.main.bounds)
         configureNavigationBar()
-        view.backgroundColor = .white
-    }
-    
-    override func loadView() {
-        mainView = MainView(frame: UIScreen.main.bounds)
-        self.view = mainView
     }
     
     func getContents(contents: Contents) {
@@ -35,10 +28,10 @@ final class MainViewContoller: UIViewController, APIControllerDelegate {
     }
     
     func configureNavigationBar() {
+        let addButton = UIBarButtonItem(barButtonSystemItem: .stop, target: nil, action: nil)
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
-        let addButton = UIBarButtonItem(barButtonSystemItem: .stop, target: nil, action: nil)
         addButton.tintColor = .black
-        navigationItem.leftBarButtonItem = addButton
+        self.navigationItem.leftBarButtonItem = addButton
     }
 }
