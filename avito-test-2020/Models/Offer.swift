@@ -8,8 +8,7 @@
 import Foundation
 
 struct Offer: Codable {
-    let id: String
-    let title: String
+    let id, title: String
     let description: String?
     let icon: Icon
     let price: String
@@ -18,8 +17,8 @@ struct Offer: Codable {
 
 struct Icon: Codable {
     let url: String
-    
+
     enum CodingKeys: String, CodingKey {
-            case url = "52x52"
-        }
+        case url = "52x52"
+    }
 }
