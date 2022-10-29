@@ -18,7 +18,6 @@ final class MainView: UIView {
         self.superVC = superVC
         
         setupViews()
-        setConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -32,7 +31,9 @@ final class MainView: UIView {
         addSubview(selectionButton)
     }
     
-    func setConstraints() {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
         selectionButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             selectionButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20),
@@ -45,7 +46,7 @@ final class MainView: UIView {
         NSLayoutConstraint.activate([
             offersCollectionView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0),
             offersCollectionView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0),
-            offersCollectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: 150),
+            offersCollectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: 45),
             offersCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)
         ])
     }
@@ -73,6 +74,7 @@ final class MainView: UIView {
         layout.scrollDirection = .vertical
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        view.alwaysBounceVertical = true
         return view
     }()
 }
