@@ -8,7 +8,7 @@
 import Foundation
 
 struct Offer: Codable {
-    let id, title: String
+    var id, title: String
     let description: String?
     let icon: Icon
     let price: String

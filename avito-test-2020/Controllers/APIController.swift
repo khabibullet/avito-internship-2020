@@ -19,7 +19,7 @@ struct Response: Codable {
 }
 
 class APIController {
-    var delegate: APIControllerDelegate?
+    let delegate: APIControllerDelegate
     let urlString = "https://raw.githubusercontent.com/avito-tech/internship/main/result.json"
     
     init(delegate: APIControllerDelegate) { self.delegate = delegate }
@@ -32,11 +32,31 @@ class APIController {
             guard error == nil else { return }
             do {
                 let response = try JSONDecoder().decode(Response.self, from: data!)
-                self.delegate?.getContents(contents: response.contents)
+                self.delegate.getContents(contents: response.contents)
                 semaphore.signal()
             } catch { return }
         }.resume()
         
         semaphore.wait()
+    }
+    
+    func loadImage(from urlStr: String, to cell: OfferCollectionViewCell) {
+        guard let url = URL(string: urlStr) else { return }
+        DispatchQueue.global().async { [weak cell] in
+            if let data = try? Data(contentsOf: url) {
+                if let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        cell?.offerIcon.image = image
+                    }
+                }
+            } else {
+                let alert = UIAlertController(title: "Error", message: "Cannot load image",
+                                              preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                DispatchQueue.main.async {
+                    self.delegate.showError(alert: alert)
+                }
+            }
+        }
     }
 }

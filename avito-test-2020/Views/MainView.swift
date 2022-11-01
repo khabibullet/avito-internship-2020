@@ -14,7 +14,6 @@ final class MainView: UIView {
     
     init(frame: CGRect, superVC: MainViewContoller) {
         super.init(frame: frame)
-        backgroundColor = .white
         self.superVC = superVC
         
         setupViews()
@@ -75,8 +74,16 @@ final class MainView: UIView {
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.alwaysBounceVertical = true
+        view.backgroundColor = UIColor(red: 235/255, green: 235/255, blue: 255/255, alpha: 1)
         return view
     }()
+    
+    func attributedStringFrom(text: String) -> NSMutableAttributedString {
+        let attributedString = NSMutableAttributedString(string: text)
+        let range = NSMakeRange(0, attributedString.length)
+        attributedString.addAttributes(HeaderReusableView.attributes, range: range)
+        return attributedString
+    }
 }
 
 

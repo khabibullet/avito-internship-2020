@@ -8,8 +8,9 @@
 import Foundation
 
 struct Contents: Codable {
-    let title, actionTitle, selectedActionTitle: String
-    let offers: [Offer]
+    let title: String
+    let actionTitle, selectedActionTitle: String
+    var offers: [Offer]
     
     enum CodingKeys: String, CodingKey {
         case title, actionTitle, selectedActionTitle
