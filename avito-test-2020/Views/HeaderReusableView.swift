@@ -11,8 +11,8 @@ class HeaderReusableView: UICollectionReusableView {
 
     static let identifier = "HeaderReusableView"
     static let lineSpacing: CGFloat = 0.3
-    static let font = UIFont.boldSystemFont(ofSize: 27.0)
-    static let labelVertiacalInsets: CGFloat = 70
+    static let font = UIFont.systemFont(ofSize: 27.0, weight: .bold)
+    static let labelVerticalPadding: CGFloat = 70
     
     static let labelParagraph: NSMutableParagraphStyle = {
         let paragraph = NSMutableParagraphStyle()
@@ -47,7 +47,6 @@ class HeaderReusableView: UICollectionReusableView {
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .natural
-        label.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 150/255, alpha: 1)
         return label
     }()
     

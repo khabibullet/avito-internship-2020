@@ -7,10 +7,10 @@
 
 import UIKit
 
-
 protocol APIControllerDelegate {
-    func getContents(contents: Contents)
-    func showError(alert: UIAlertController)
+    func setContents(contents: Contents)
+    func setImageData(data: Data, index: Int)
+    func presentAlert(alert: UIAlertController)
 }
 
 final class MainViewContoller: UIViewController, APIControllerDelegate,
@@ -21,10 +21,10 @@ final class MainViewContoller: UIViewController, APIControllerDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         APIController(delegate: self).getGeneralData()
+        APIController(delegate: self).loadIconImages(of: contents?.offers)
         
-        contents?.offers[3].title = "oops"
+//        contents?.offers[3].title = "oops"
         
         mainView.offersCollectionView.delegate = self
         mainView.offersCollectionView.dataSource = self
@@ -40,20 +40,22 @@ final class MainViewContoller: UIViewController, APIControllerDelegate,
         self.view = MainView(frame: UIScreen.main.bounds, superVC: self)
     }
     
-    func getContents(contents: Contents) {
+    func setContents(contents: Contents) {
         self.contents = contents
     }
     
-    func showError(alert: UIAlertController) {
-        present(alert, animated: true, completion: nil)
+    func setImageData(data: Data, index: Int) {
+        self.contents?.offers[index].icon.image = data
     }
     
+    func presentAlert(alert: UIAlertController) {
+        present(alert, animated: true, completion: nil)
+    }
     
     // MARK: Collection View configuration
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return contents?.offers.count ?? 0
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) ->
         UICollectionViewCell {
@@ -62,12 +64,9 @@ final class MainViewContoller: UIViewController, APIControllerDelegate,
             as! OfferCollectionViewCell
         
         guard let offer = contents?.offers[indexPath.row] else { return cell }
-        APIController(delegate: self).loadImage(from: offer.icon.url, to: cell)
         cell.configure(offer: offer)
-            
         return cell
     }
-    
     
     // MARK: Collection View Header configuration
     func collectionView(_ collectionView: UICollectionView,
@@ -77,7 +76,7 @@ final class MainViewContoller: UIViewController, APIControllerDelegate,
             ofKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: HeaderReusableView.identifier, for: indexPath) as! HeaderReusableView
         
-        let attributedText = mainView.attributedStringFrom(text: contents?.title ?? "")
+        let attributedText = (contents?.title ?? "").attributed(by: HeaderReusableView.attributes)
         header.configure(text: attributedText)
         return header
     }
@@ -91,6 +90,6 @@ final class MainViewContoller: UIViewController, APIControllerDelegate,
         let text = NSString(string: contents?.title ?? "")
         let size = text.boundingRect(with: rect, options: [.usesLineFragmentOrigin],
             attributes: HeaderReusableView.attributes, context: nil)
-        return CGSize(width: size.width, height: size.height + HeaderReusableView.labelVertiacalInsets)
+        return CGSize(width: size.width, height: size.height + HeaderReusableView.labelVerticalPadding)
     }
 }
