@@ -7,12 +7,6 @@
 
 import UIKit
 
-//protocol APIControllerDelegate {
-//    func setContents(contents: Contents)
-//    func setImageData(data: Data, index: Int)
-//    func presentAlert(alert: UIAlertController)
-//}
-
 final class MainViewContoller: UIViewController,
                                UICollectionViewDelegate, UICollectionViewDataSource,
                                UICollectionViewDelegateFlowLayout {
@@ -23,6 +17,9 @@ final class MainViewContoller: UIViewController,
     init(networkManager: APIController) {
         self.networkManager = networkManager
         super.init(nibName: nil, bundle: nil)
+        
+        networkManager.getGeneralData(destination: self)
+        networkManager.loadIconImages(of: contents?.offers, to: self)
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -30,8 +27,8 @@ final class MainViewContoller: UIViewController,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        networkManager.getGeneralData(destination: self)
-        networkManager.loadIconImages(of: contents?.offers, to: self)
+        
+        setButtonsUnchecked()
         
         mainView.offersCollectionView.delegate = self
         mainView.offersCollectionView.dataSource = self
@@ -53,6 +50,12 @@ final class MainViewContoller: UIViewController,
     
     func setImageData(data: Data, index: Int) {
         self.contents?.offers[index].icon.image = data
+    }
+    
+    func setButtonsUnchecked() {
+//        for index in contents?.offers.count? {
+//            offer.isSelected = false
+//        }
     }
     
     func presentAlert(alert: UIAlertController) {

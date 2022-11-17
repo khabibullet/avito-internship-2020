@@ -136,21 +136,35 @@ class OfferCollectionViewCell: UICollectionViewCell {
         checkButton.isEnabled = offer.isSelected
         offerDescription.attributedText = offer.description?.attributed(by: attributes)
         priceLabel.text = offer.price
-        guard let imageData = offer.icon.image else { return }
-        guard let image = UIImage(data: imageData) else { return }
-        let margin = CGFloat(13)
-        offerIcon.image = image.withInset(
-            UIEdgeInsets(top: margin, left: margin,
-                         bottom: margin, right: margin))
+        configureOfferIcon(imageData: offer.icon.image)
         setFrames()
+    }
+    
+    func configureOfferIcon(imageData: Data?) {
+        let margin = CGFloat(13)
+        if let imageData = imageData,
+           let image = UIImage(data: imageData) {
+            offerIcon.image = image
+                .withInset(UIEdgeInsets(
+                    top: margin, left: margin,
+                    bottom: margin, right: margin))
+        } else {
+            let image = UIImage(systemName: "questionmark")!
+                .withInset(UIEdgeInsets(
+                    top: margin, left: margin,
+                    bottom: margin, right: margin))?
+                .withBackground(color: .systemGray2)
+            offerIcon.image = image
+        }
     }
 }
 
 extension UIImage {
 
     func withInset(_ insets: UIEdgeInsets) -> UIImage? {
-        let cgSize = CGSize(width: self.size.width + insets.left * self.scale + insets.right * self.scale,
-                            height: self.size.height + insets.top * self.scale + insets.bottom * self.scale)
+        let cgSize = CGSize(
+            width: self.size.width + insets.left * self.scale + insets.right * self.scale,
+            height: self.size.height + insets.top * self.scale + insets.bottom * self.scale)
 
         UIGraphicsBeginImageContextWithOptions(cgSize, false, self.scale)
         defer { UIGraphicsEndImageContext() }
@@ -159,5 +173,20 @@ extension UIImage {
         self.draw(at: origin)
 
         return UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(self.renderingMode)
+    }
+    
+    func withBackground(color: UIColor, opaque: Bool = true) -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(size, opaque, scale)
+            
+        guard let ctx = UIGraphicsGetCurrentContext(), let image = cgImage else { return self }
+        defer { UIGraphicsEndImageContext() }
+            
+        let rect = CGRect(origin: .zero, size: size)
+        ctx.setFillColor(color.cgColor)
+        ctx.fill(rect)
+        ctx.concatenate(CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: size.height))
+        ctx.draw(image, in: rect)
+            
+        return UIGraphicsGetImageFromCurrentImageContext() ?? self
     }
 }

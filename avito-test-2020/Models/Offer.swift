@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit
 
 struct Offer: Codable {
     var id, title: String

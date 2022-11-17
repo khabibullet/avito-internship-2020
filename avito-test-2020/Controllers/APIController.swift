@@ -7,66 +7,58 @@
 
 import UIKit
 
-
-struct Response: Codable {
-    let status: String
-    let contents: Contents
-    
-    enum CodingKeys: String, CodingKey {
-        case status
-        case contents = "result"
-    }
-}
-
 class APIController {
-    let urlString = "https://raw.githubusercontent.com/avito-tech/internship/main/result.json"
-    
     private init() { }
     static let service = APIController()
     
     func getGeneralData(destination: MainViewContoller?) {
-        let semaph = DispatchSemaphore(value: 0)
+        let urlString = "https://raw.githubusercontent.com/avito-tech/internship/main/result.json"
         guard let url = URL(string: urlString) else { return }
-
+        
+        let semaph = DispatchSemaphore(value: 0)
         URLSession.shared.dataTask(with: url) { [weak destination] (data, response, error) in
-            guard error == nil else { fatalError("URL session error") }
-            do {
-                let response = try JSONDecoder().decode(Response.self, from: data!)
-                destination?.setContents(contents: response.contents)
-                semaph.signal()
-            } catch { fatalError("Cannot decode JSON") }
+            if let error = error {
+                self.presentAlertWithMessage(message: error.localizedDescription,
+                                        destination: destination)
+            } else {
+                do {
+                    let response = try JSONDecoder().decode(Response.self, from: data!)
+                        destination?.setContents(contents: response.contents)
+                } catch {
+                    self.presentAlertWithMessage(message: error.localizedDescription,
+                                            destination: destination)
+                }
+            }
+            semaph.signal()
         }.resume()
         semaph.wait()
     }
-    
+
     func loadIconImages(of offers: [Offer]?, to destination: MainViewContoller?) {
         guard let offers = offers else { return }
         
         let group = DispatchGroup()
-        for (index, offer) in offers.enumerated() {
+        for (index, _) in offers.enumerated() {
             group.enter()
             DispatchQueue.global().async() {
-                guard let url = URL(string: offer.icon.url) else { return }
+                guard let url = URL(string: offers[index].icon.url) else { return }
                 if let data = try? Data(contentsOf: url) {
                     destination?.setImageData(data: data, index: index)
-                } else {
-                    APIController.service.presentAlertWithMessage(
-                        message: "Cannot load image",
-                        destination: destination)
                 }
                 group.leave()
             }
         }
         group.wait()
     }
-    
+
     func presentAlertWithMessage(message: String, destination: MainViewContoller?) {
         let alert = UIAlertController(
             title: "Error", message: message,
             preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(
             title: "OK",
-            style: UIAlertAction.Style.default, handler: nil))
+            style: UIAlertAction.Style.default,
+            handler: { _ in fatalError(message) }))
         DispatchQueue.main.async {
             destination?.presentAlert(alert: alert)
         }
