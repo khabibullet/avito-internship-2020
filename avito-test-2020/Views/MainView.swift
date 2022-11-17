@@ -15,6 +15,7 @@ final class MainView: UIView {
     init(frame: CGRect, superVC: MainViewContoller) {
         super.init(frame: frame)
         self.superVC = superVC
+        self.backgroundColor = .white
         
         setupViews()
     }
@@ -33,32 +34,26 @@ final class MainView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        let height = bounds.height * 0.075
+        selectionButton.frame = CGRect(
+            x: bounds.minX + 20, y: bounds.maxY - height - 20,
+            width: bounds.width - 40, height: height)
         
+        offersCollectionView.frame = CGRect(
+            x: 0, y: 100,
+            width: bounds.width,
+            height: bounds.height - 90)
         
-        selectionButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            selectionButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20),
-            selectionButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20),
-            selectionButton.heightAnchor.constraint(equalToConstant: self.frame.size.height * 0.075),
-            selectionButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -20)
-        ])
+        offersCollectionView.contentInset.bottom = height + 40
         
-        offersCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            offersCollectionView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0),
-            offersCollectionView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0),
-            offersCollectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: 45),
-            offersCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)
-        ])
-        
-        offersCollectionView.contentInset.bottom = 100
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.configureWithTransparentBackground()
+        let bar = superVC?.navigationController?.navigationBar
+        bar?.standardAppearance = navBarAppearance
+        bar?.scrollEdgeAppearance = navBarAppearance
     }
     
     let stopButton: UIBarButtonItem = {
-//        let button = UIBarButtonItem(
-//            barButtonSystemItem: .stop,
-//            target: nil,
-//            action: nil)
         let config = UIImage.SymbolConfiguration(
             pointSize: 23, weight: .regular, scale: .small)
         let image = UIImage(systemName: "xmark",
@@ -82,9 +77,7 @@ final class MainView: UIView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        let view = UICollectionView(
-            frame: .zero,
-            collectionViewLayout: layout)
+        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.alwaysBounceVertical = true
         return view
     }()

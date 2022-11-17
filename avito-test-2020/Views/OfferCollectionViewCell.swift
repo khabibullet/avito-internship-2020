@@ -82,6 +82,7 @@ class OfferCollectionViewCell: UICollectionViewCell {
             size: CGSize(width: cellWidth * 0.25,
                          height: cellWidth * 0.25))
         
+        
         let titleSize = offerTitle.intrinsicContentSize
         let numOfTitleRows = ceil((titleSize.width + 20) / (cellWidth * 0.6))
         offerTitle.frame = CGRect(
@@ -89,6 +90,7 @@ class OfferCollectionViewCell: UICollectionViewCell {
                             y: bounds.minY + 6),
             size: CGSize(width: cellWidth * 0.6,
                          height: titleSize.height * numOfTitleRows + 16))
+        
         
         let descriptionSize = offerDescription.intrinsicContentSize
         let numOfDescriptionRows = ceil(descriptionSize.width / (cellWidth * 0.6))
@@ -98,6 +100,7 @@ class OfferCollectionViewCell: UICollectionViewCell {
             size: CGSize(width: cellWidth * 0.6,
                          height: descriptionSize.height * numOfDescriptionRows))
         
+        
         let priceLabelSize = priceLabel.intrinsicContentSize
         let numOfPriceRows = ceil(priceLabelSize.width / (cellWidth * 0.6))
         priceLabel.frame = CGRect(
@@ -105,6 +108,7 @@ class OfferCollectionViewCell: UICollectionViewCell {
                             y: offerDescription.frame.maxY),
             size: CGSize(width: cellWidth * 0.6,
                          height: priceLabelSize.height * numOfPriceRows + 20))
+        
         
         checkButton.frame = CGRect(
             origin: CGPoint(x: offerTitle.frame.maxX,

@@ -19,53 +19,48 @@ struct Response: Codable {
 }
 
 class APIController {
-    let delegate: APIControllerDelegate
     let urlString = "https://raw.githubusercontent.com/avito-tech/internship/main/result.json"
     
-    init(delegate: APIControllerDelegate) {
-        self.delegate = delegate
-    }
+    private init() { }
+    static let service = APIController()
     
-    var semaph = DispatchSemaphore(value: 0)
-    
-    func getGeneralData() {
+    func getGeneralData(destination: MainViewContoller?) {
+        let semaph = DispatchSemaphore(value: 0)
         guard let url = URL(string: urlString) else { return }
 
-        URLSession.shared.dataTask(with: url) { [self] (data, response, error) in
+        URLSession.shared.dataTask(with: url) { [weak destination] (data, response, error) in
             guard error == nil else { fatalError("URL session error") }
             do {
                 let response = try JSONDecoder().decode(Response.self, from: data!)
-                self.delegate.setContents(contents: response.contents)
+                destination?.setContents(contents: response.contents)
                 semaph.signal()
             } catch { fatalError("Cannot decode JSON") }
         }.resume()
         semaph.wait()
     }
     
-    func loadIconImages(of offers: [Offer]?) {
+    func loadIconImages(of offers: [Offer]?, to destination: MainViewContoller?) {
         guard let offers = offers else { return }
         
         let group = DispatchGroup()
         for (index, offer) in offers.enumerated() {
             group.enter()
             DispatchQueue.global().async() {
-                self.loadImage(from: offer.icon.url, by: index)
+                guard let url = URL(string: offer.icon.url) else { return }
+                if let data = try? Data(contentsOf: url) {
+                    destination?.setImageData(data: data, index: index)
+                } else {
+                    APIController.service.presentAlertWithMessage(
+                        message: "Cannot load image",
+                        destination: destination)
+                }
                 group.leave()
             }
         }
         group.wait()
     }
     
-    func loadImage(from url: String, by index: Int) {
-        guard let url = URL(string: url) else { return }
-        if let data = try? Data(contentsOf: url) {
-            self.delegate.setImageData(data: data, index: index)
-        } else {
-            presentAlertWithMessage(message: "Cannot load image")
-        }
-    }
-    
-    func presentAlertWithMessage(message: String) {
+    func presentAlertWithMessage(message: String, destination: MainViewContoller?) {
         let alert = UIAlertController(
             title: "Error", message: message,
             preferredStyle: UIAlertController.Style.alert)
@@ -73,7 +68,7 @@ class APIController {
             title: "OK",
             style: UIAlertAction.Style.default, handler: nil))
         DispatchQueue.main.async {
-            self.delegate.presentAlert(alert: alert)
+            destination?.presentAlert(alert: alert)
         }
     }
 }
