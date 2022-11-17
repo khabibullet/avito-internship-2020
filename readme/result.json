@@ -1,0 +1,57 @@
+{
+  "status": "ok",
+  "result": {
+    "title": "Сделайте объявление заметнее на 7 дней",
+    "actionTitle": "Продолжить без изменений",
+    "selectedActionTitle": "Выбрать",
+    "list": [
+      {
+        "id": "xl",
+        "title": "XL объявление",
+        "description": "Пользователи смогут посмотреть фотографии, описание и телефон прямо из результатов поиска.",
+        "icon": {
+          "52x52": "https://raw.githubusercontent.com/khabibullet/avito-test-2020/master/readme/icons/vas-xl-52.png"
+        },
+        "price": "356 ₽",
+        "isSelected": true
+      },
+      {
+        "id": "highlight",
+        "title": "Выделение",
+        "description": "Яркий цвет не даст затеряться среди других объявлений.",
+        "icon": {
+          "52x52": "https://raw.githubusercontent.com/khabibullet/avito-test-2020/master/readme/icons/vas-highlight-52.png"
+        },
+        "price": "299 ₽",
+        "isSelected": true
+      },
+      {
+        "id": "x10_1",
+        "title": "До 10 раз больше просмотров на 1 день",
+        "icon": {
+          "52x52": "https://raw.githubusercontent.com/khabibullet/avito-test-2020/master/readme/icons/vas-x10_1-52.png"
+        },
+        "price": "400 ₽",
+        "isSelected": false
+      },
+      {
+        "id": "x5_1",
+        "title": "До 5 раз больше просмотров на 1 день",
+        "icon": {
+          "52x52": "https://raw.githubusercontent.com/khabibullet/avito-test-2020/master/readme/icons/vas-x5_1-52.png"
+        },
+        "price": "230 ₽",
+        "isSelected": false
+      },
+      {
+        "id": "x2_1",
+        "title": "До 2 раз больше просмотров на 1 день",
+        "icon": {
+          "52x52": "https://raw.githubusercontent.com/khabibullet/avito-test-2020/master/readme/icons/vas-x2_1-52.png"
+        },
+        "price": "100 ₽",
+        "isSelected": false
+      }
+    ]
+  }
+}

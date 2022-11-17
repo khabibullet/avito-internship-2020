@@ -12,7 +12,7 @@ class APIController {
     static let service = APIController()
     
     func getGeneralData(destination: MainViewContoller?) {
-        let urlString = "https://raw.githubusercontent.com/avito-tech/internship/main/result.json"
+        let urlString = "https://raw.githubusercontent.com/khabibullet/avito-test-2020/master/readme/result.json"
         guard let url = URL(string: urlString) else { return }
         
         let semaph = DispatchSemaphore(value: 0)
@@ -53,7 +53,7 @@ class APIController {
 
     func presentAlertWithMessage(message: String, destination: MainViewContoller?) {
         let alert = UIAlertController(
-            title: "Error", message: message,
+            title: "Error", message: "Fatal error: \(message)",
             preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(
             title: "OK",
