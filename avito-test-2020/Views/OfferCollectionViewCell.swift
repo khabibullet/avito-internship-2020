@@ -151,9 +151,8 @@ class OfferCollectionViewCell: UICollectionViewCell {
         } else {
             let image = UIImage(systemName: "questionmark")!
                 .withInset(UIEdgeInsets(
-                    top: margin, left: margin,
-                    bottom: margin, right: margin))?
-                .withBackground(color: .systemGray2)
+                    top: 5, left: 5,
+                    bottom: 5, right: 5))
             offerIcon.image = image
         }
     }
