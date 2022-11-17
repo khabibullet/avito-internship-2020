@@ -1,9 +1,9 @@
 # Avito-tech 2020 internship test task
 
-[Original](https://github.com/avito-tech/internship)
+[Original task descripton](https://github.com/avito-tech/internship)
 
 ### Task
-- Implement screen according to [reference example](https://raw.githubusercontent.com/khabibullet/avito-test-2020/master/readme/screen.json). Choose indentation and fonts approximately.
+- Implement screen according to [reference example](https://raw.githubusercontent.com/khabibullet/avito-test-2020/master/readme/screen.png). Choose indentation and fonts approximately.
 - Source data should be parsed from [JSON](https://raw.githubusercontent.com/khabibullet/avito-test-2020/master/readme/result.json)
 
 ### UI interaction logics
@@ -17,7 +17,9 @@
 - Using external dependencies
 
 ### Recommended
-- Not using Storyboard
-- Using UICollectionView
-- VIPER
++ Not using Storyboard
++ Using UICollectionView
++ VIPER
+
+## Implementation
 
