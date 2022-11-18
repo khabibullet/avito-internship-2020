@@ -12,6 +12,32 @@ final class MainView: UIView {
 
     weak var superVC: MainViewContoller?
     
+    let stopButton: UIBarButtonItem = {
+        let config = UIImage.SymbolConfiguration(
+            pointSize: 23, weight: .regular, scale: .small)
+        let image = UIImage(systemName: "xmark",
+                            withConfiguration: config)
+        let button = UIBarButtonItem(image: image, style: .done,
+                                     target: nil, action: nil)
+        button.tintColor = .black
+        return button
+    }()
+    
+    let selectionButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.layer.cornerRadius = 7
+        return button
+    }()
+    
+    var offersCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        view.alwaysBounceVertical = true
+        return view
+    }()
+    
     init(frame: CGRect, superVC: MainViewContoller) {
         super.init(frame: frame)
         self.superVC = superVC
@@ -53,34 +79,19 @@ final class MainView: UIView {
         bar?.scrollEdgeAppearance = navBarAppearance
     }
     
-    let stopButton: UIBarButtonItem = {
-        let config = UIImage.SymbolConfiguration(
-            pointSize: 23, weight: .regular, scale: .small)
-        let image = UIImage(systemName: "xmark",
-                            withConfiguration: config)
-        let button = UIBarButtonItem(image: image, style: .done,
-                                     target: nil, action: nil)
-        button.tintColor = .black
-        return button
-    }()
-    
-    let selectionButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Выбрать", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor.Avito.blue
-        button.layer.cornerRadius = 7
-        return button
-    }()
-    
-    var offersCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        view.alwaysBounceVertical = true
-        return view
-    }()
+    func configureSelectionButton(offerIsSelected: Bool, actionTitle: String,
+                                  selectedActionTitle: String) {
+        if offerIsSelected {
+            selectionButton.setTitle(selectedActionTitle, for: .normal)
+            selectionButton.setTitleColor(.white, for: .normal)
+            selectionButton.backgroundColor = UIColor.Avito.blue
+        } else {
+            selectionButton.setTitle(actionTitle, for: .normal)
+            selectionButton.setTitleColor(.systemCyan, for: .normal)
+            selectionButton.backgroundColor = UIColor.Avito.lightBlue
+        }
+        selectionButton.titleLabel?.font = UIFont.systemFont(ofSize: 18)
+    }
 }
 
 
@@ -93,6 +104,10 @@ extension UIColor {
         static var cellGray: UIColor {
             return UIColor(red: 248/255, green: 248/255,
                            blue: 248/255, alpha: 1)
+        }
+        static var lightBlue: UIColor {
+            return UIColor(red: 200/255, green: 231/255,
+                           blue: 1, alpha: 1)
         }
     }
 }

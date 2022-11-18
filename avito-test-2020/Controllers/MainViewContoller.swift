@@ -12,7 +12,11 @@ final class MainViewContoller: UIViewController,
                                UICollectionViewDelegateFlowLayout {
     var contents: Contents?
     var mainView: MainView { return self.view as! MainView }
-    var networkManager: APIController
+    let networkManager: APIController
+    var currentSelectedOfferId: Int?
+    @objc dynamic var isAnyOfferSelected: Bool = true
+    
+    var offersSelectionObservation: NSKeyValueObservation?
     
     init(networkManager: APIController) {
         self.networkManager = networkManager
@@ -38,6 +42,19 @@ final class MainViewContoller: UIViewController,
         mainView.offersCollectionView.register(HeaderReusableView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: HeaderReusableView.identifier)
+        
+        offersSelectionObservation = observe(\MainViewContoller.isAnyOfferSelected,
+            options: [.new, .old]) { [weak self] vc, change in
+            
+            guard let new = change.newValue, let old = change.oldValue else { return }
+            if new != old {
+                self?.mainView.configureSelectionButton(
+                    offerIsSelected: new, actionTitle: self?.contents?.actionTitle ?? "",
+                    selectedActionTitle: self?.contents?.selectedActionTitle ?? "")
+            }
+        }
+        
+        isAnyOfferSelected = false
     }
     
     override func loadView() {
@@ -53,9 +70,11 @@ final class MainViewContoller: UIViewController,
     }
     
     func setButtonsUnchecked() {
-//        for index in contents?.offers.count? {
-//            offer.isSelected = false
-//        }
+        if contents != nil {
+            for (index, _) in contents!.offers.enumerated() {
+                contents!.offers[index].isSelected = false
+            }
+        }
     }
     
     func presentAlert(alert: UIAlertController) {
@@ -101,5 +120,24 @@ final class MainViewContoller: UIViewController,
         let size = text.boundingRect(with: rect, options: [.usesLineFragmentOrigin],
             attributes: HeaderReusableView.attributes, context: nil)
         return CGSize(width: size.width, height: size.height + HeaderReusableView.labelVerticalPadding)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        didSelectItemAt indexPath: IndexPath) {
+        guard let isSelected = contents?.offers[indexPath.row].isSelected else { return }
+        
+        if isSelected {
+            contents?.offers[indexPath.row].isSelected = false
+            currentSelectedOfferId = nil
+            isAnyOfferSelected = false
+        } else {
+            contents?.offers[indexPath.row].isSelected = true
+            if let id = currentSelectedOfferId {
+                contents?.offers[id].isSelected = false
+            }
+            currentSelectedOfferId = indexPath.row
+            isAnyOfferSelected = true
+        }
+        mainView.offersCollectionView.reloadData()
     }
 }

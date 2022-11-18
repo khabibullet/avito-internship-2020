@@ -13,7 +13,11 @@ class APIController {
     
     func getGeneralData(destination: MainViewContoller?) {
         let urlString = "https://raw.githubusercontent.com/khabibullet/avito-test-2020/master/readme/result.json"
-        guard let url = URL(string: urlString) else { return }
+        
+        guard let url = URL(string: urlString) else {
+            self.presentAlertWithMessage(message: "Invalid URL", destination: destination)
+            return
+        }
         
         let semaph = DispatchSemaphore(value: 0)
         URLSession.shared.dataTask(with: url) { [weak destination] (data, response, error) in
