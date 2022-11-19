@@ -12,7 +12,9 @@ class APIController {
     static let service = APIController()
     
     func getGeneralData(destination: MainViewContoller?) {
-        let urlString = "https://raw.githubusercontent.com/khabibullet/avito-test-2020/master/readme/result.json"
+        let urlString = """
+        https://raw.githubusercontent.com/khabibullet/avito-test-2020/master/readme/result.json
+        """
         
         guard let url = URL(string: urlString) else {
             self.presentAlertWithMessage(message: "Invalid URL", destination: destination)

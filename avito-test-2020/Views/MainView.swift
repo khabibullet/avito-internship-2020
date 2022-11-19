@@ -60,17 +60,19 @@ final class MainView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let height = bounds.height * 0.075
+        let collectionViewHeight = bounds.height - safeAreaInsets.top
+        let buttonHeight = (collectionViewHeight - safeAreaInsets.bottom) * 0.1
+        
         selectionButton.frame = CGRect(
-            x: bounds.minX + 20, y: bounds.maxY - height - 20,
-            width: bounds.width - 40, height: height)
+            x: bounds.minX + 20, y: bounds.maxY - buttonHeight - 20,
+            width: bounds.width - 40, height: buttonHeight)
         
         offersCollectionView.frame = CGRect(
-            x: 0, y: 100,
+            x: 0, y: safeAreaInsets.top,
             width: bounds.width,
-            height: bounds.height - 90)
+            height: collectionViewHeight)
         
-        offersCollectionView.contentInset.bottom = height + 40
+        offersCollectionView.contentInset.bottom = buttonHeight + 40
         
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithTransparentBackground()
@@ -87,7 +89,7 @@ final class MainView: UIView {
             selectionButton.backgroundColor = UIColor.Avito.blue
         } else {
             selectionButton.setTitle(actionTitle, for: .normal)
-            selectionButton.setTitleColor(.systemCyan, for: .normal)
+            selectionButton.setTitleColor(UIColor.Avito.blue, for: .normal)
             selectionButton.backgroundColor = UIColor.Avito.lightBlue
         }
         selectionButton.titleLabel?.font = UIFont.systemFont(ofSize: 18)
@@ -102,13 +104,23 @@ extension UIColor {
                            blue: 1, alpha: 1)
         }
         static var cellGray: UIColor {
-            return UIColor(red: 248/255, green: 248/255,
-                           blue: 248/255, alpha: 1)
+            return UIColor(red: 240/255, green: 240/255,
+                           blue: 240/255, alpha: 1)
         }
         static var lightBlue: UIColor {
             return UIColor(red: 200/255, green: 231/255,
                            blue: 1, alpha: 1)
         }
+    }
+    
+    func withBrightnessAdjustedTo(constant: CGFloat) -> UIColor {
+        var h: CGFloat = 0
+        var s: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+        self.getHue(&h, saturation: &s, brightness: &b, alpha: &a)
+        return UIColor(hue: h, saturation: s,
+                       brightness: min((b + constant), 1.0), alpha: a)
     }
 }
 

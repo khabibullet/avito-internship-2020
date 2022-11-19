@@ -10,12 +10,12 @@ import UIKit
 final class MainViewContoller: UIViewController,
                                UICollectionViewDelegate, UICollectionViewDataSource,
                                UICollectionViewDelegateFlowLayout {
+    
     var contents: Contents?
     var mainView: MainView { return self.view as! MainView }
     let networkManager: APIController
     var currentSelectedOfferId: Int?
     @objc dynamic var isAnyOfferSelected: Bool = true
-    
     var offersSelectionObservation: NSKeyValueObservation?
     
     init(networkManager: APIController) {
@@ -25,8 +25,13 @@ final class MainViewContoller: UIViewController,
         networkManager.getGeneralData(destination: self)
         networkManager.loadIconImages(of: contents?.offers, to: self)
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func loadView() {
+        self.view = MainView(frame: UIScreen.main.bounds, superVC: self)
     }
     
     override func viewDidLoad() {
@@ -36,13 +41,21 @@ final class MainViewContoller: UIViewController,
         
         mainView.offersCollectionView.delegate = self
         mainView.offersCollectionView.dataSource = self
-        
+        mainView.offersCollectionView.delaysContentTouches = false
         mainView.offersCollectionView.register(OfferCollectionViewCell.self,
             forCellWithReuseIdentifier: OfferCollectionViewCell.identifier)
         mainView.offersCollectionView.register(HeaderReusableView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: HeaderReusableView.identifier)
         
+        addCheckmarksObservation()
+        isAnyOfferSelected = false
+        
+        mainView.selectionButton.addTarget(self, action: #selector(selectionButtonTapped),
+                                           for: .touchUpInside)
+    }
+    
+    func addCheckmarksObservation() {
         offersSelectionObservation = observe(\MainViewContoller.isAnyOfferSelected,
             options: [.new, .old]) { [weak self] vc, change in
             
@@ -53,12 +66,30 @@ final class MainViewContoller: UIViewController,
                     selectedActionTitle: self?.contents?.selectedActionTitle ?? "")
             }
         }
-        
-        isAnyOfferSelected = false
     }
     
-    override func loadView() {
-        self.view = MainView(frame: UIScreen.main.bounds, superVC: self)
+    @objc func selectionButtonTapped() {
+        var message: String
+        if isAnyOfferSelected {
+            message = """
+            \nВы выбрали услугу
+            \"\(contents?.offers[currentSelectedOfferId ?? 0].title ?? "nil")\"
+            """
+        } else {
+            message = "\nПродолжить без изменений?"
+        }
+        
+        let alert = UIAlertController(
+            title: "Подтвердить?", message: message,
+            preferredStyle: UIAlertController.Style.alert)
+        
+        alert.addAction(UIAlertAction(
+            title: "OК", style: UIAlertAction.Style.default,
+            handler: nil))
+        
+        DispatchQueue.main.async {
+            self.presentAlert(alert: alert)
+        }
     }
     
     func setContents(contents: Contents) {
@@ -81,13 +112,15 @@ final class MainViewContoller: UIViewController,
         present(alert, animated: true, completion: nil)
     }
     
+    
     // MARK: Collection View configuration
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
         return contents?.offers.count ?? 0
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) ->
-        UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = mainView.offersCollectionView.dequeueReusableCell(
             withReuseIdentifier: OfferCollectionViewCell.identifier, for: indexPath)
             as! OfferCollectionViewCell
@@ -97,13 +130,13 @@ final class MainViewContoller: UIViewController,
         return cell
     }
     
-    // MARK: Collection View Header configuration
     func collectionView(_ collectionView: UICollectionView,
                                  viewForSupplementaryElementOfKind kind: String,
                                  at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(
             ofKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: HeaderReusableView.identifier, for: indexPath) as! HeaderReusableView
+            withReuseIdentifier: HeaderReusableView.identifier, for: indexPath)
+            as! HeaderReusableView
         
         let attributedText = (contents?.title ?? "").attributed(by: HeaderReusableView.attributes)
         header.configure(text: attributedText)
@@ -139,5 +172,23 @@ final class MainViewContoller: UIViewController,
             isAnyOfferSelected = true
         }
         mainView.offersCollectionView.reloadData()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        didHighlightItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+
+        cell.contentView.backgroundColor = cell.contentView.backgroundColor?
+            .withBrightnessAdjustedTo(constant: -0.04)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        didUnhighlightItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+        
+        UIView.animate(withDuration: 0.1) {
+            cell.contentView.backgroundColor = cell.contentView.backgroundColor?
+                .withBrightnessAdjustedTo(constant: 0.04)
+        }
     }
 }
