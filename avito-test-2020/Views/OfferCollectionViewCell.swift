@@ -103,7 +103,7 @@ class OfferCollectionViewCell: UICollectionViewCell {
         )
         priceLabel.frame = CGRect(
             origin: CGPoint(x: offerIcon.frame.maxX, y: offerDescription.frame.maxY),
-            size: CGSize(width: cellWidth * 0.6, height: priceLabelHeight ?? 0)
+            size: CGSize(width: cellWidth * 0.6, height: (priceLabelHeight ?? 0) + 20)
         )
         
         checkButton.frame = CGRect(
