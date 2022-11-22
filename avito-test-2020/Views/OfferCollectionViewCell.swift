@@ -78,57 +78,52 @@ class OfferCollectionViewCell: UICollectionViewCell {
         let cellWidth = UIScreen.main.bounds.width - 40
         
         offerIcon.frame = CGRect(
-            origin: CGPoint(x: bounds.minX,
-                            y: bounds.minY),
-            size: CGSize(width: cellWidth * 0.25,
-                         height: cellWidth * 0.25))
+            origin: CGPoint(x: bounds.minX, y: bounds.minY),
+            size: CGSize(width: cellWidth * 0.25, height: cellWidth * 0.25)
+        )
         
-        
-        let titleSize = offerTitle.intrinsicContentSize
-        let numOfTitleRows = ceil((titleSize.width + 20) / (cellWidth * 0.6))
+        let offerTitleHeight = offerTitle.text?.height(
+            withConstrainedWidth: cellWidth * 0.6, font: offerTitle.font
+        )
         offerTitle.frame = CGRect(
-            origin: CGPoint(x: offerIcon.frame.maxX,
-                            y: bounds.minY + 6),
-            size: CGSize(width: cellWidth * 0.6,
-                         height: titleSize.height * numOfTitleRows + 16))
+            origin: CGPoint(x: offerIcon.frame.maxX, y: bounds.minY + 6),
+            size: CGSize(width: cellWidth * 0.6, height: (offerTitleHeight ?? 0.0) + 10)
+        )
         
-        
-        let descriptionSize = offerDescription.intrinsicContentSize
-        let numOfDescriptionRows = ceil(descriptionSize.width / (cellWidth * 0.6))
+        let descriptionHeight = offerDescription.attributedText?.height(
+            withConstrainedWidth: cellWidth * 0.6
+        )
         offerDescription.frame = CGRect(
-            origin: CGPoint(x: offerIcon.frame.maxX,
-                            y: offerTitle.frame.maxY),
-            size: CGSize(width: cellWidth * 0.6,
-                         height: descriptionSize.height * numOfDescriptionRows))
+            origin: CGPoint(x: offerIcon.frame.maxX, y: offerTitle.frame.maxY),
+            size: CGSize(width: cellWidth * 0.6, height: descriptionHeight ?? 0)
+        )
         
-        
-        let priceLabelSize = priceLabel.intrinsicContentSize
-        let numOfPriceRows = ceil(priceLabelSize.width / (cellWidth * 0.6))
+        let priceLabelHeight = priceLabel.text?.height(
+            withConstrainedWidth: MainView.cellWidth, font: priceLabel.font
+        )
         priceLabel.frame = CGRect(
-            origin: CGPoint(x: offerIcon.frame.maxX,
-                            y: offerDescription.frame.maxY),
-            size: CGSize(width: cellWidth * 0.6,
-                         height: priceLabelSize.height * numOfPriceRows + 20))
-        
+            origin: CGPoint(x: offerIcon.frame.maxX, y: offerDescription.frame.maxY),
+            size: CGSize(width: cellWidth * 0.6, height: priceLabelHeight ?? 0)
+        )
         
         checkButton.frame = CGRect(
-            origin: CGPoint(x: offerTitle.frame.maxX,
-                            y: bounds.minY),
-            size: CGSize(width: cellWidth * 0.15,
-                         height: offerIcon.frame.height))
+            origin: CGPoint(x: offerTitle.frame.maxX, y: bounds.minY),
+            size: CGSize(width: cellWidth * 0.15, height: offerIcon.frame.height)
+        )
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
-        let width = offerIcon.frame.width
-                    + offerTitle.frame.width
-                    + checkButton.frame.width
+    override func systemLayoutSizeFitting(_ targetSize: CGSize,
+        withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority,
+        verticalFittingPriority: UILayoutPriority) -> CGSize {
+        
+        let width = offerIcon.frame.width + offerTitle.frame.width
+            + checkButton.frame.width
         let height = max(offerIcon.frame.height, offerTitle.frame.height
-                                                + offerDescription.frame.height
-                                                + priceLabel.frame.height + 16)
+            + offerDescription.frame.height + priceLabel.frame.height + 16)
         return CGSize(width: width, height: height)
     }
     
@@ -156,22 +151,5 @@ class OfferCollectionViewCell: UICollectionViewCell {
                     bottom: 3, right: 3))
             offerIcon.image = image
         }
-    }
-}
-
-extension UIImage {
-
-    func withInset(_ insets: UIEdgeInsets) -> UIImage? {
-        let cgSize = CGSize(
-            width: self.size.width + insets.left * self.scale + insets.right * self.scale,
-            height: self.size.height + insets.top * self.scale + insets.bottom * self.scale)
-
-        UIGraphicsBeginImageContextWithOptions(cgSize, false, self.scale)
-        defer { UIGraphicsEndImageContext() }
-
-        let origin = CGPoint(x: insets.left * self.scale, y: insets.top * self.scale)
-        self.draw(at: origin)
-
-        return UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(self.renderingMode)
     }
 }

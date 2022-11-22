@@ -7,9 +7,7 @@
 
 import UIKit
 
-final class MainViewContoller: UIViewController,
-                               UICollectionViewDelegate, UICollectionViewDataSource,
-                               UICollectionViewDelegateFlowLayout {
+final class MainViewContoller: UIViewController {
     
     var contents: Contents?
     var mainView: MainView { return self.view as! MainView }
@@ -31,7 +29,7 @@ final class MainViewContoller: UIViewController,
     }
     
     override func loadView() {
-        self.view = MainView(frame: UIScreen.main.bounds, superVC: self)
+        self.view = MainView(frame: UIScreen.main.bounds, mainViewController: self)
     }
     
     override func viewDidLoad() {
@@ -111,9 +109,12 @@ final class MainViewContoller: UIViewController,
     func presentAlert(alert: UIAlertController) {
         present(alert, animated: true, completion: nil)
     }
+}
+
+// MARK: - OffersCollectionViewDataSource
+
+extension MainViewContoller: UICollectionViewDataSource {
     
-    
-    // MARK: Collection View configuration
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
         return contents?.offers.count ?? 0
@@ -142,19 +143,13 @@ final class MainViewContoller: UIViewController,
         header.configure(text: attributedText)
         return header
     }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        referenceSizeForHeaderInSection section: Int) -> CGSize {
-        
-        let width = UIScreen.main.bounds.width - 40
-        let rect = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
-        let text = NSString(string: contents?.title ?? "")
-        let size = text.boundingRect(with: rect, options: [.usesLineFragmentOrigin],
-            attributes: HeaderReusableView.attributes, context: nil)
-        return CGSize(width: size.width, height: size.height + HeaderReusableView.labelVerticalPadding)
-    }
-    
+}
+
+
+// MARK: - OffersCollectionViewDelegate
+
+extension MainViewContoller: UICollectionViewDelegate {
+
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
         guard let isSelected = contents?.offers[indexPath.row].isSelected else { return }
@@ -190,5 +185,21 @@ final class MainViewContoller: UIViewController,
             cell.contentView.backgroundColor = cell.contentView.backgroundColor?
                 .withBrightnessAdjustedTo(constant: 0.04)
         }
+    }
+}
+
+// MARK: - OffersCollectionViewDelegateFlowLayout
+
+extension MainViewContoller: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        let rect = CGSize(width: MainView.cellWidth, height: CGFloat.greatestFiniteMagnitude)
+        let text = NSString(string: contents?.title ?? "")
+        let size = text.boundingRect(with: rect, options: [.usesLineFragmentOrigin],
+            attributes: HeaderReusableView.attributes, context: nil)
+        return CGSize(width: size.width, height: size.height + 15)
     }
 }

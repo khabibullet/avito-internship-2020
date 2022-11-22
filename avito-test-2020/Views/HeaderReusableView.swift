@@ -12,7 +12,15 @@ class HeaderReusableView: UICollectionReusableView {
     static let identifier = "HeaderReusableView"
     static let lineSpacing: CGFloat = 0.3
     static let font = UIFont.systemFont(ofSize: 27.0, weight: .bold)
-    static let labelVerticalPadding: CGFloat = 70
+    
+    
+    private let titleLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.textAlignment = .natural
+        return label
+    }()
     
     static let labelParagraph: NSMutableParagraphStyle = {
         let paragraph = NSMutableParagraphStyle()
@@ -21,34 +29,29 @@ class HeaderReusableView: UICollectionReusableView {
     }()
     
     static let attributes: [NSAttributedString.Key : Any] = [
-            NSAttributedString.Key.paragraphStyle: HeaderReusableView.labelParagraph,
-            NSAttributedString.Key.font: HeaderReusableView.font
+        NSAttributedString.Key.paragraphStyle: HeaderReusableView.labelParagraph,
+        NSAttributedString.Key.font: HeaderReusableView.font
     ]
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(titleLabel)
-        
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            titleLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20),
-            titleLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20),
-            titleLabel.topAnchor.constraint(equalTo: self.topAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-        ])
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.lineBreakMode = .byWordWrapping
-        label.textAlignment = .natural
-        return label
-    }()
+    override func layoutSubviews() {
+        
+        let titleHeight = titleLabel.attributedText?.height(
+            withConstrainedWidth: MainView.cellWidth
+        )
+        
+        titleLabel.frame = CGRect(
+            x: 20, y: 0, width: MainView.cellWidth, height: titleHeight ?? 0
+        )
+    }
     
     public func configure(text: NSMutableAttributedString) {
         titleLabel.attributedText = text

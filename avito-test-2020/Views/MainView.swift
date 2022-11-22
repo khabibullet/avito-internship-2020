@@ -10,7 +10,8 @@ import UIKit
 
 final class MainView: UIView {
 
-    weak var superVC: MainViewContoller?
+    weak var mainViewController: MainViewContoller?
+    static let cellWidth = UIScreen.main.bounds.width - 40
     
     let stopButton: UIBarButtonItem = {
         let config = UIImage.SymbolConfiguration(
@@ -38,9 +39,22 @@ final class MainView: UIView {
         return view
     }()
     
-    init(frame: CGRect, superVC: MainViewContoller) {
+    let gradientView: UIView = {
+        let view = UIView(frame: UIScreen.main.bounds)
+        let gradient = CAGradientLayer()
+        gradient.startPoint = CGPoint(x: 0.5, y: 0.0)
+        gradient.endPoint = CGPoint(x: 0.5, y: 0.6)
+        let whiteColor = UIColor.white
+        gradient.colors = [whiteColor.withAlphaComponent(0.0).cgColor, whiteColor.withAlphaComponent(1.0).cgColor]
+        gradient.locations = [NSNumber(value: 0.0), NSNumber(value: 1.0)]
+        gradient.frame = view.bounds
+        view.layer.mask = gradient
+        return view
+    }()
+    
+    init(frame: CGRect, mainViewController: MainViewContoller) {
         super.init(frame: frame)
-        self.superVC = superVC
+        self.mainViewController = mainViewController
         self.backgroundColor = .white
         
         setupViews()
@@ -51,10 +65,11 @@ final class MainView: UIView {
     }
     
     func setupViews() {
-        superVC?.navigationItem.leftBarButtonItem = stopButton
+        configureNavigationBar()
         
         addSubview(offersCollectionView)
         addSubview(selectionButton)
+//        addSubview(gradientView)
     }
     
     override func layoutSubviews() {
@@ -65,18 +80,24 @@ final class MainView: UIView {
         
         selectionButton.frame = CGRect(
             x: bounds.minX + 20, y: bounds.maxY - buttonHeight - 20,
-            width: bounds.width - 40, height: buttonHeight)
+            width: MainView.cellWidth, height: buttonHeight
+        )
         
         offersCollectionView.frame = CGRect(
             x: 0, y: safeAreaInsets.top,
-            width: bounds.width,
-            height: collectionViewHeight)
+            width: bounds.width, height: collectionViewHeight
+        )
         
         offersCollectionView.contentInset.bottom = buttonHeight + 40
+    }
+    
+    func configureNavigationBar() {
+        let bar = mainViewController?.navigationController?.navigationBar
         
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithTransparentBackground()
-        let bar = superVC?.navigationController?.navigationBar
+        
+        bar?.topItem?.leftBarButtonItem = stopButton
         bar?.standardAppearance = navBarAppearance
         bar?.scrollEdgeAppearance = navBarAppearance
     }
@@ -93,42 +114,5 @@ final class MainView: UIView {
             selectionButton.backgroundColor = UIColor.Avito.lightBlue
         }
         selectionButton.titleLabel?.font = UIFont.systemFont(ofSize: 18)
-    }
-}
-
-
-extension UIColor {
-    struct Avito {
-        static var blue: UIColor {
-            return UIColor(red: 1/255, green: 172/255,
-                           blue: 1, alpha: 1)
-        }
-        static var cellGray: UIColor {
-            return UIColor(red: 240/255, green: 240/255,
-                           blue: 240/255, alpha: 1)
-        }
-        static var lightBlue: UIColor {
-            return UIColor(red: 200/255, green: 231/255,
-                           blue: 1, alpha: 1)
-        }
-    }
-    
-    func withBrightnessAdjustedTo(constant: CGFloat) -> UIColor {
-        var h: CGFloat = 0
-        var s: CGFloat = 0
-        var b: CGFloat = 0
-        var a: CGFloat = 0
-        self.getHue(&h, saturation: &s, brightness: &b, alpha: &a)
-        return UIColor(hue: h, saturation: s,
-                       brightness: min((b + constant), 1.0), alpha: a)
-    }
-}
-
-extension String {
-    func attributed(by attributes: [NSAttributedString.Key : Any]) -> NSMutableAttributedString {
-        let attributedString = NSMutableAttributedString(string: self)
-        let range = NSMakeRange(0, attributedString.length)
-        attributedString.addAttributes(attributes, range: range)
-        return attributedString
     }
 }
