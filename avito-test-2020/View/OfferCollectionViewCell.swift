@@ -53,12 +53,9 @@ class OfferCollectionViewCell: UICollectionViewCell {
     
     let checkButton: UIButton = {
         let button = UIButton()
-        let config = UIImage.SymbolConfiguration(pointSize: 27, weight: .bold, scale: .small)
-        let image = UIImage.checkmark.withConfiguration(config)
-        button.setImage(image, for: .normal)
         button.setImage(UIImage(), for: .disabled)
-        button.tintColor = UIColor.Avito.blue
         button.isUserInteractionEnabled = false
+        button.setImage(UIImage(named: "checkmark"), for: .normal)
         return button
     }()
     
@@ -72,6 +69,10 @@ class OfferCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(offerTitle)
         contentView.addSubview(offerDescription)
         contentView.addSubview(priceLabel)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func setFrames() {
@@ -112,10 +113,6 @@ class OfferCollectionViewCell: UICollectionViewCell {
         )
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func systemLayoutSizeFitting(_ targetSize: CGSize,
         withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority,
         verticalFittingPriority: UILayoutPriority) -> CGSize {
@@ -140,16 +137,14 @@ class OfferCollectionViewCell: UICollectionViewCell {
         let margin = CGFloat(13)
         if let imageData = imageData,
            let image = UIImage(data: imageData) {
-            offerIcon.image = image
-                .withInset(UIEdgeInsets(
-                    top: margin, left: margin,
-                    bottom: margin, right: margin))
+            offerIcon.image = image.withInset(
+                UIEdgeInsets(top: margin, left: margin, bottom: margin, right: margin)
+            )
         } else {
-            let image = UIImage(systemName: "questionmark")!
-                .withInset(UIEdgeInsets(
-                    top: 3, left: 3,
-                    bottom: 3, right: 3))
-            offerIcon.image = image
+            guard let image = UIImage(named: "no-image") else { return }
+            offerIcon.image = image.withInset(
+                UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3)
+            )
         }
     }
 }

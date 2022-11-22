@@ -14,14 +14,23 @@ final class MainView: UIView {
     static let cellWidth = UIScreen.main.bounds.width - 40
     
     let stopButton: UIBarButtonItem = {
-        let config = UIImage.SymbolConfiguration(
-            pointSize: 23, weight: .regular, scale: .small)
-        let image = UIImage(systemName: "xmark",
-                            withConfiguration: config)
-        let button = UIBarButtonItem(image: image, style: .done,
-                                     target: nil, action: nil)
-        button.tintColor = .black
-        return button
+        if #available(iOS 13.0, *) {
+            let config = UIImage.SymbolConfiguration(
+                pointSize: 23, weight: .regular, scale: .small)
+            let image = UIImage(systemName: "xmark", withConfiguration: config)
+            let button = UIBarButtonItem(
+                image: image, style: .done, target: self, action: nil
+            )
+            button.tintColor = UIColor.black
+            return button
+        } else {
+            let button = UIBarButtonItem(
+                image: UIImage(named: "CloseIconTemplate"),
+                style: .done, target: self, action: nil
+            )
+            button.tintColor = UIColor.black
+            return button
+        }
     }()
     
     let selectionButton: UIButton = {
@@ -36,6 +45,7 @@ final class MainView: UIView {
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.alwaysBounceVertical = true
+        view.backgroundColor = .white
         return view
     }()
     
@@ -93,13 +103,9 @@ final class MainView: UIView {
     
     func configureNavigationBar() {
         let bar = mainViewController?.navigationController?.navigationBar
-        
-        let navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.configureWithTransparentBackground()
-        
         bar?.topItem?.leftBarButtonItem = stopButton
-        bar?.standardAppearance = navBarAppearance
-        bar?.scrollEdgeAppearance = navBarAppearance
+        bar?.barTintColor = .white
+        bar?.shadowImage = UIImage()
     }
     
     func configureSelectionButton(offerIsSelected: Bool, actionTitle: String,

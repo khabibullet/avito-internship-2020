@@ -13,7 +13,6 @@ class HeaderReusableView: UICollectionReusableView {
     static let lineSpacing: CGFloat = 0.3
     static let font = UIFont.systemFont(ofSize: 27.0, weight: .bold)
     
-    
     private let titleLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.numberOfLines = 0
@@ -43,7 +42,6 @@ class HeaderReusableView: UICollectionReusableView {
     }
     
     override func layoutSubviews() {
-        
         let titleHeight = titleLabel.attributedText?.height(
             withConstrainedWidth: MainView.cellWidth
         )

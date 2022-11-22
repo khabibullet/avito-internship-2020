@@ -18,7 +18,6 @@
 		410C3A2F2909C172000A6961 /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410C3A2E2909C172000A6961 /* Offer.swift */; };
 		410C3A312909D440000A6961 /* Contents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410C3A302909D440000A6961 /* Contents.swift */; };
 		4199D90529092E430022907F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4199D90429092E430022907F /* AppDelegate.swift */; };
-		4199D90729092E430022907F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4199D90629092E430022907F /* SceneDelegate.swift */; };
 		4199D90929092E430022907F /* MainViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4199D90829092E430022907F /* MainViewContoller.swift */; };
 		4199D90E29092E450022907F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4199D90D29092E450022907F /* Assets.xcassets */; };
 		4199D91129092E450022907F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4199D90F29092E450022907F /* LaunchScreen.storyboard */; };
@@ -41,7 +40,6 @@
 		410C3A302909D440000A6961 /* Contents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contents.swift; sourceTree = "<group>"; };
 		4199D90129092E430022907F /* avito-test-2020.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "avito-test-2020.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4199D90429092E430022907F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		4199D90629092E430022907F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		4199D90829092E430022907F /* MainViewContoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewContoller.swift; sourceTree = "<group>"; };
 		4199D90D29092E450022907F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4199D91029092E450022907F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -62,7 +60,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3F301E62292D16640099E00F /* Extensions */ = {
+		3F301E62292D16640099E00F /* Extension */ = {
 			isa = PBXGroup;
 			children = (
 				3F301E63292D16940099E00F /* String+Frame.swift */,
@@ -72,7 +70,7 @@
 				3F301E6B292D18B70099E00F /* UIColor+Brightness.swift */,
 				3F301E6D292D238D0099E00F /* NSAttributedString+Frame.swift */,
 			);
-			path = Extensions;
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		4199D8F829092E430022907F = {
@@ -95,23 +93,23 @@
 			isa = PBXGroup;
 			children = (
 				3F3FD574292940EC004F938C /* avito-test-2020.entitlements */,
-				3F301E62292D16640099E00F /* Extensions */,
-				41FD37AA290AE4AC00772212 /* Models */,
-				41FD37A9290AE4A400772212 /* Views */,
-				41FD37A7290AE42A00772212 /* Controllers */,
+				41FD37AA290AE4AC00772212 /* Model */,
+				41FD37A9290AE4A400772212 /* View */,
+				41FD37A7290AE42A00772212 /* Controller */,
+				3F301E62292D16640099E00F /* Extension */,
 				41FD37AB290AE4C900772212 /* Core */,
 				41FD37A8290AE45600772212 /* Resources */,
 			);
 			path = "avito-test-2020";
 			sourceTree = "<group>";
 		};
-		41FD37A7290AE42A00772212 /* Controllers */ = {
+		41FD37A7290AE42A00772212 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
 				4199D91E290993CD0022907F /* APIController.swift */,
 				4199D90829092E430022907F /* MainViewContoller.swift */,
 			);
-			path = Controllers;
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		41FD37A8290AE45600772212 /* Resources */ = {
@@ -119,36 +117,35 @@
 			children = (
 				4199D90D29092E450022907F /* Assets.xcassets */,
 				4199D90F29092E450022907F /* LaunchScreen.storyboard */,
-				4199D91229092E450022907F /* Info.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		41FD37A9290AE4A400772212 /* Views */ = {
+		41FD37A9290AE4A400772212 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				41FD37AC290AE62100772212 /* MainView.swift */,
 				4199D91C290981720022907F /* OfferCollectionViewCell.swift */,
 				41020ADD290D451C00528441 /* HeaderReusableView.swift */,
 			);
-			path = Views;
+			path = View;
 			sourceTree = "<group>";
 		};
-		41FD37AA290AE4AC00772212 /* Models */ = {
+		41FD37AA290AE4AC00772212 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				410C3A302909D440000A6961 /* Contents.swift */,
 				410C3A2E2909C172000A6961 /* Offer.swift */,
 				3F3DB5DB2926A5EC00507AAC /* Response.swift */,
 			);
-			path = Models;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		41FD37AB290AE4C900772212 /* Core */ = {
 			isa = PBXGroup;
 			children = (
 				4199D90429092E430022907F /* AppDelegate.swift */,
-				4199D90629092E430022907F /* SceneDelegate.swift */,
+				4199D91229092E450022907F /* Info.plist */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -237,7 +234,6 @@
 				410C3A2F2909C172000A6961 /* Offer.swift in Sources */,
 				4199D90529092E430022907F /* AppDelegate.swift in Sources */,
 				4199D91F290993CD0022907F /* APIController.swift in Sources */,
-				4199D90729092E430022907F /* SceneDelegate.swift in Sources */,
 				3F301E6E292D238D0099E00F /* NSAttributedString+Frame.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -307,6 +303,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "avito-test-2020/Core/Info.plist";
+				"INFOPLIST_FILE[sdk=*]" = "avito-test-2020/Core/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -362,6 +360,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "avito-test-2020/Core/Info.plist";
+				"INFOPLIST_FILE[sdk=*]" = "avito-test-2020/Core/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -383,7 +383,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YZU63GB4P5;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "avito-test-2020/Resources/Info.plist";
+				INFOPLIST_FILE = "avito-test-2020/Core/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
@@ -416,7 +416,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YZU63GB4P5;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "avito-test-2020/Resources/Info.plist";
+				INFOPLIST_FILE = "avito-test-2020/Core/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
