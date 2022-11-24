@@ -2,7 +2,7 @@
 //  HeaderCollectionReusableView.swift
 //  avito-test-2020
 //
-//  Created by Alebelly Nemesis on 10/29/22.
+//  Created by Irek Khabibullin on 10/29/22.
 //
 
 import UIKit

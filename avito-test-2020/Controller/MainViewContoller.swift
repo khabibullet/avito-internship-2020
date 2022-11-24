@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  avito-test-2020
 //
-//  Created by Alebelly Nemesis on 10/26/22.
+//  Created by Irek Khabibullin on 10/26/22.
 //
 
 import UIKit
