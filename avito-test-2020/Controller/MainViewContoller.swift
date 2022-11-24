@@ -9,28 +9,26 @@ import UIKit
 
 final class MainViewContoller: UIViewController {
     
-    var contents: Contents?
-    var mainView: MainView { return self.view as! MainView }
-    let networkManager: DataFetchable
-    var currentSelectedOfferId: Int?
-    @objc dynamic var isAnyOfferSelected: Bool = true
-    var offersSelectionObservation: NSKeyValueObservation?
+    private var contents: Contents?
+    private var mainView: MainView { return self.view as! MainView }
+    private let networkManager: DataFetchable
+    private var currentSelectedOfferId: Int?
+    @objc private dynamic var isAnyOfferSelected: Bool = true
+    private var offersSelectionObservation: NSKeyValueObservation?
     
     init(networkManager: DataFetchable) {
         self.networkManager = networkManager
         super.init(nibName: nil, bundle: nil)
         
         loadContents()
-//        networkManager.loadIconImages(of: contents?.offers, to: self)
-        
-//        self.view = MainView(frame: UIScreen.main.bounds)
+        loadIcons()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func loadContents() {
+    private func loadContents() {
         let semaphore = DispatchSemaphore(value: 0)
         networkManager.fetchInitialData { (contents, error)  in
             if let contents = contents {
@@ -46,15 +44,30 @@ final class MainViewContoller: UIViewController {
         semaphore.wait()
     }
     
+    private func loadIcons() {
+        guard contents?.offers != nil else { return }
+
+        let group = DispatchGroup()
+        for (index, _) in contents!.offers.enumerated() {
+            group.enter()
+            DispatchQueue.global().async() {
+                self.networkManager.getRawData(
+                    iconURL: self.contents!.offers[index].icon.url) { data in
+                    self.contents!.offers[index].icon.image = data
+                }
+                group.leave()
+            }
+        }
+        group.wait()
+    }
     
     override func loadView() {
         self.view = MainView(frame: UIScreen.main.bounds)
-//        guard let bar = self.navigationController?.navigationBar else { return }
-//        mainView.configureNavigationBar(bar: bar)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if contents == nil { return }
         
         mainView.offersCollectionView.delegate = self
         mainView.offersCollectionView.dataSource = self
@@ -78,7 +91,15 @@ final class MainViewContoller: UIViewController {
         }
     }
     
-    func addCheckmarksObservation() {
+    private func setCheckmarksUnchecked() {
+        if contents != nil {
+            for (index, _) in contents!.offers.enumerated() {
+                contents!.offers[index].isSelected = false
+            }
+        }
+    }
+    
+    private func addCheckmarksObservation() {
         offersSelectionObservation = observe(\MainViewContoller.isAnyOfferSelected,
             options: [.new, .old]) { [weak self] vc, change in
             
@@ -92,7 +113,7 @@ final class MainViewContoller: UIViewController {
         }
     }
     
-    @objc func selectionButtonTapped() {
+    @objc private func selectionButtonTapped() {
         var message = "\nПродолжить без изменений?"
         if isAnyOfferSelected {
             message = """
@@ -103,19 +124,7 @@ final class MainViewContoller: UIViewController {
         presentAlert(title: "Подтвердить?", message: message, completion: nil)
     }
     
-//    func setImageData(data: Data, index: Int) {
-//        self.contents?.offers[index].icon.image = data
-//    }
-    
-    func setCheckmarksUnchecked() {
-        if contents != nil {
-            for (index, _) in contents!.offers.enumerated() {
-                contents!.offers[index].isSelected = false
-            }
-        }
-    }
-    
-    func presentAlert(title: String, message: String,
+    private func presentAlert(title: String, message: String,
         completion: ((UIAlertAction) -> Void)?) {
         DispatchQueue.main.async {
             let alert = UIAlertController(
@@ -149,7 +158,7 @@ extension MainViewContoller: UICollectionViewDataSource {
             as! OfferCollectionViewCell
         
         guard let offer = contents?.offers[indexPath.row] else { return cell }
-        cell.configure(offer: offer)
+        cell.configureOfferCell(offer: offer)
         return cell
     }
     

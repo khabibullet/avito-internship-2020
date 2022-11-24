@@ -7,11 +7,11 @@
 
 import UIKit
 
-class OfferCollectionViewCell: UICollectionViewCell {
+final class OfferCollectionViewCell: UICollectionViewCell {
     
-    static let identifier = "offerCell"
+    public static let identifier = "offerCell"
     
-    let offerTitle: UILabel = {
+    private let offerTitle: UILabel = {
         let label = UILabel()
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
@@ -19,31 +19,31 @@ class OfferCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    var offerIcon: UIImageView = {
+    private var offerIcon: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFit
         return view
     }()
     
-    let offerDescription: UILabel = {
+    private let offerDescription: UILabel = {
         let label = UILabel()
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
         return label
     }()
     
-    static var descriptionStyle: NSMutableParagraphStyle = {
+    private static var descriptionStyle: NSMutableParagraphStyle = {
         let paragraph = NSMutableParagraphStyle()
         paragraph.minimumLineHeight = 19
         return paragraph
     }()
     
-    let attributes: [NSAttributedString.Key : Any] = [
+    private let attributes: [NSAttributedString.Key : Any] = [
         NSAttributedString.Key.paragraphStyle: descriptionStyle,
         NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .light)
     ]
     
-    let priceLabel: UILabel = {
+    private let priceLabel: UILabel = {
         let label = UILabel()
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
@@ -51,7 +51,7 @@ class OfferCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    let checkButton: UIButton = {
+    private let checkButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(), for: .disabled)
         button.isUserInteractionEnabled = false
@@ -75,7 +75,7 @@ class OfferCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setFrames() {
+    private func setFrames() {
         let cellWidth = UIScreen.main.bounds.width - 40
         
         offerIcon.frame = CGRect(
@@ -124,16 +124,16 @@ class OfferCollectionViewCell: UICollectionViewCell {
         return CGSize(width: width, height: height)
     }
     
-    public func configure(offer: Offer) {
+    public func configureOfferCell(offer: Offer) {
         offerTitle.text = offer.title
         checkButton.isEnabled = offer.isSelected
         offerDescription.attributedText = offer.description?.attributed(by: attributes)
         priceLabel.text = offer.price
-        configureOfferIcon(imageData: offer.icon.image)
+        setOfferIcon(imageData: offer.icon.image)
         setFrames()
     }
     
-    func configureOfferIcon(imageData: Data?) {
+    private func setOfferIcon(imageData: Data?) {
         let margin = CGFloat(13)
         if let imageData = imageData,
            let image = UIImage(data: imageData) {

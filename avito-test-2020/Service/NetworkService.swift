@@ -10,13 +10,16 @@ import UIKit
 protocol DataFetchable {
     func fetchInitialData(completion: @escaping (_ contents: Contents?,
         _ error: String) -> Void)
+    
+    func getRawData(iconURL: String, completion: @escaping
+        (_ data: Data?) -> Void)
 }
 
 class NetworkService: DataFetchable {
     private init() { }
     static let service = NetworkService()
     
-    static let initialURL = """
+    private static let initialURL = """
     https://raw.githubusercontent.com/\
     khabibullet/avito-test-2020/master/readme/result.json
     """
@@ -24,15 +27,12 @@ class NetworkService: DataFetchable {
     func fetchInitialData(completion: @escaping (_ contents: Contents?,
         _ error: String) -> Void) {
         guard let url = URL(string: NetworkService.initialURL) else {
-            print("invalid URL")
             completion(nil, "Invalid URL")
             return
         }
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in
-            print(url)
             if let error = error {
-                print(1, error.localizedDescription)
                 completion(nil, error.localizedDescription)
                 return
             }
@@ -40,26 +40,17 @@ class NetworkService: DataFetchable {
                 let response = try JSONDecoder().decode(Response.self, from: data!)
                 completion(response.contents, "")
             } catch {
-                print(2, error.localizedDescription)
                 completion(nil, error.localizedDescription)
             }
         }.resume()
     }
-
-//    func loadIconImages(of offers: [Offer]?, to destination: MainViewContoller?) {
-//        guard let offers = offers else { return }
-//
-//        let group = DispatchGroup()
-//        for (index, _) in offers.enumerated() {
-//            group.enter()
-//            DispatchQueue.global().async() {
-//                guard let url = URL(string: offers[index].icon.url) else { return }
-//                if let data = try? Data(contentsOf: url) {
-//                    destination?.setImageData(data: data, index: index)
-//                }
-//                group.leave()
-//            }
-//        }
-//        group.wait()
-//    }
+    
+    
+    func getRawData(iconURL: String, completion: @escaping
+        (_ data: Data?) -> Void) {
+        guard let url = URL(string: iconURL) else { return }
+        if let data = try? Data(contentsOf: url) {
+            completion(data)
+        }
+    }
 }

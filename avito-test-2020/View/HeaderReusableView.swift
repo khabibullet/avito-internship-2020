@@ -7,11 +7,11 @@
 
 import UIKit
 
-class HeaderReusableView: UICollectionReusableView {
+final class HeaderReusableView: UICollectionReusableView {
 
-    static let identifier = "HeaderReusableView"
-    static let lineSpacing: CGFloat = 0.3
-    static let font = UIFont.systemFont(ofSize: 27.0, weight: .bold)
+    public static let identifier = "HeaderReusableView"
+    private static let titleLineSpacing: CGFloat = 0.3
+    private static let font = UIFont.systemFont(ofSize: 27.0, weight: .bold)
     
     private let titleLabel: UILabel = {
         let label = UILabel(frame: .zero)
@@ -21,9 +21,9 @@ class HeaderReusableView: UICollectionReusableView {
         return label
     }()
     
-    static let labelParagraph: NSMutableParagraphStyle = {
+    private static let labelParagraph: NSMutableParagraphStyle = {
         let paragraph = NSMutableParagraphStyle()
-        paragraph.lineSpacing = HeaderReusableView.lineSpacing
+        paragraph.lineSpacing = HeaderReusableView.titleLineSpacing
         return paragraph
     }()
     

@@ -17,7 +17,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let window = UIWindow(frame: UIScreen.main.bounds)
         let networkService = NetworkService.service
         let viewController = MainViewContoller(networkManager: networkService)
-        window.rootViewController = UINavigationController(rootViewController: viewController)
+        window.rootViewController = UINavigationController(
+            rootViewController: viewController
+        )
         window.makeKeyAndVisible()
         self.window = window
         
