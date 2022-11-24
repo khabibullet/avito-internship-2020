@@ -22,7 +22,7 @@
 		4199D90E29092E450022907F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4199D90D29092E450022907F /* Assets.xcassets */; };
 		4199D91129092E450022907F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4199D90F29092E450022907F /* LaunchScreen.storyboard */; };
 		4199D91D290981720022907F /* OfferCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4199D91C290981720022907F /* OfferCollectionViewCell.swift */; };
-		4199D91F290993CD0022907F /* APIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4199D91E290993CD0022907F /* APIController.swift */; };
+		4199D91F290993CD0022907F /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4199D91E290993CD0022907F /* NetworkService.swift */; };
 		41FD37AD290AE62100772212 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FD37AC290AE62100772212 /* MainView.swift */; };
 /* End PBXBuildFile section */
 
@@ -45,7 +45,7 @@
 		4199D91029092E450022907F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4199D91229092E450022907F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4199D91C290981720022907F /* OfferCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferCollectionViewCell.swift; sourceTree = "<group>"; };
-		4199D91E290993CD0022907F /* APIController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIController.swift; sourceTree = "<group>"; };
+		4199D91E290993CD0022907F /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		41FD37AC290AE62100772212 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -73,6 +73,14 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		3F5CECCB292E8B13009B463C /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				4199D91E290993CD0022907F /* NetworkService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
 		4199D8F829092E430022907F = {
 			isa = PBXGroup;
 			children = (
@@ -96,6 +104,7 @@
 				41FD37AA290AE4AC00772212 /* Model */,
 				41FD37A9290AE4A400772212 /* View */,
 				41FD37A7290AE42A00772212 /* Controller */,
+				3F5CECCB292E8B13009B463C /* Service */,
 				3F301E62292D16640099E00F /* Extension */,
 				41FD37AB290AE4C900772212 /* Core */,
 				41FD37A8290AE45600772212 /* Resources */,
@@ -106,7 +115,6 @@
 		41FD37A7290AE42A00772212 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				4199D91E290993CD0022907F /* APIController.swift */,
 				4199D90829092E430022907F /* MainViewContoller.swift */,
 			);
 			path = Controller;
@@ -233,7 +241,7 @@
 				3F301E68292D17D50099E00F /* String+Attribute.swift in Sources */,
 				410C3A2F2909C172000A6961 /* Offer.swift in Sources */,
 				4199D90529092E430022907F /* AppDelegate.swift in Sources */,
-				4199D91F290993CD0022907F /* APIController.swift in Sources */,
+				4199D91F290993CD0022907F /* NetworkService.swift in Sources */,
 				3F301E6E292D238D0099E00F /* NSAttributedString+Frame.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -305,7 +313,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "avito-test-2020/Core/Info.plist";
 				"INFOPLIST_FILE[sdk=*]" = "avito-test-2020/Core/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -362,7 +370,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "avito-test-2020/Core/Info.plist";
 				"INFOPLIST_FILE[sdk=*]" = "avito-test-2020/Core/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -390,7 +398,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -423,7 +431,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -11,31 +11,50 @@ final class MainViewContoller: UIViewController {
     
     var contents: Contents?
     var mainView: MainView { return self.view as! MainView }
-    let networkManager: APIController
+    let networkManager: DataFetchable
     var currentSelectedOfferId: Int?
     @objc dynamic var isAnyOfferSelected: Bool = true
     var offersSelectionObservation: NSKeyValueObservation?
     
-    init(networkManager: APIController) {
+    init(networkManager: DataFetchable) {
         self.networkManager = networkManager
         super.init(nibName: nil, bundle: nil)
         
-        networkManager.getGeneralData(destination: self)
-        networkManager.loadIconImages(of: contents?.offers, to: self)
+        loadContents()
+//        networkManager.loadIconImages(of: contents?.offers, to: self)
+        
+//        self.view = MainView(frame: UIScreen.main.bounds)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func loadContents() {
+        let semaphore = DispatchSemaphore(value: 0)
+        networkManager.fetchInitialData { (contents, error)  in
+            if let contents = contents {
+                self.contents = contents
+            } else {
+                self.presentAlert(
+                    title: "Error", message: error,
+                    completion: { _ in fatalError(error) }
+                )
+            }
+            semaphore.signal()
+        }
+        semaphore.wait()
+    }
+    
+    
     override func loadView() {
-        self.view = MainView(frame: UIScreen.main.bounds, mainViewController: self)
+        self.view = MainView(frame: UIScreen.main.bounds)
+//        guard let bar = self.navigationController?.navigationBar else { return }
+//        mainView.configureNavigationBar(bar: bar)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setButtonsUnchecked()
         
         mainView.offersCollectionView.delegate = self
         mainView.offersCollectionView.dataSource = self
@@ -46,11 +65,17 @@ final class MainViewContoller: UIViewController {
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: HeaderReusableView.identifier)
         
+        setCheckmarksUnchecked()
         addCheckmarksObservation()
         isAnyOfferSelected = false
         
-        mainView.selectionButton.addTarget(self, action: #selector(selectionButtonTapped),
-                                           for: .touchUpInside)
+        mainView.selectionButton.addTarget(
+            self, action: #selector(selectionButtonTapped), for: .touchUpInside
+        )
+        
+        if let bar = navigationController?.navigationBar {
+            mainView.configureNavigationBar(bar: bar)
+        }
     }
     
     func addCheckmarksObservation() {
@@ -61,44 +86,28 @@ final class MainViewContoller: UIViewController {
             if new != old {
                 self?.mainView.configureSelectionButton(
                     offerIsSelected: new, actionTitle: self?.contents?.actionTitle ?? "",
-                    selectedActionTitle: self?.contents?.selectedActionTitle ?? "")
+                    selectedActionTitle: self?.contents?.selectedActionTitle ?? ""
+                )
             }
         }
     }
     
     @objc func selectionButtonTapped() {
-        var message: String
+        var message = "\nПродолжить без изменений?"
         if isAnyOfferSelected {
             message = """
             \nВы выбрали услугу
             \"\(contents?.offers[currentSelectedOfferId ?? 0].title ?? "nil")\"
             """
-        } else {
-            message = "\nПродолжить без изменений?"
         }
-        
-        let alert = UIAlertController(
-            title: "Подтвердить?", message: message,
-            preferredStyle: UIAlertController.Style.alert)
-        
-        alert.addAction(UIAlertAction(
-            title: "OК", style: UIAlertAction.Style.default,
-            handler: nil))
-        
-        DispatchQueue.main.async {
-            self.presentAlert(alert: alert)
-        }
+        presentAlert(title: "Подтвердить?", message: message, completion: nil)
     }
     
-    func setContents(contents: Contents) {
-        self.contents = contents
-    }
+//    func setImageData(data: Data, index: Int) {
+//        self.contents?.offers[index].icon.image = data
+//    }
     
-    func setImageData(data: Data, index: Int) {
-        self.contents?.offers[index].icon.image = data
-    }
-    
-    func setButtonsUnchecked() {
+    func setCheckmarksUnchecked() {
         if contents != nil {
             for (index, _) in contents!.offers.enumerated() {
                 contents!.offers[index].isSelected = false
@@ -106,10 +115,23 @@ final class MainViewContoller: UIViewController {
         }
     }
     
-    func presentAlert(alert: UIAlertController) {
-        present(alert, animated: true, completion: nil)
+    func presentAlert(title: String, message: String,
+        completion: ((UIAlertAction) -> Void)?) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(
+                title: title, message: message, preferredStyle: UIAlertController.Style.alert
+            )
+            alert.addAction(
+                UIAlertAction(title: "OK", style: UIAlertAction.Style.default,
+                handler: completion)
+            )
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 }
+
+
+
 
 // MARK: - OffersCollectionViewDataSource
 

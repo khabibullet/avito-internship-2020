@@ -10,7 +10,6 @@ import UIKit
 
 final class MainView: UIView {
 
-    weak var mainViewController: MainViewContoller?
     static let cellWidth = UIScreen.main.bounds.width - 40
     
     let stopButton: UIBarButtonItem = {
@@ -49,38 +48,18 @@ final class MainView: UIView {
         return view
     }()
     
-    let gradientView: UIView = {
-        let view = UIView(frame: UIScreen.main.bounds)
-        let gradient = CAGradientLayer()
-        gradient.startPoint = CGPoint(x: 0.5, y: 0.0)
-        gradient.endPoint = CGPoint(x: 0.5, y: 0.6)
-        let whiteColor = UIColor.white
-        gradient.colors = [whiteColor.withAlphaComponent(0.0).cgColor, whiteColor.withAlphaComponent(1.0).cgColor]
-        gradient.locations = [NSNumber(value: 0.0), NSNumber(value: 1.0)]
-        gradient.frame = view.bounds
-        view.layer.mask = gradient
-        return view
-    }()
-    
-    init(frame: CGRect, mainViewController: MainViewContoller) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
-        self.mainViewController = mainViewController
         self.backgroundColor = .white
         
-        setupViews()
+        addSubview(offersCollectionView)
+        addSubview(selectionButton)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupViews() {
-        configureNavigationBar()
-        
-        addSubview(offersCollectionView)
-        addSubview(selectionButton)
-//        addSubview(gradientView)
-    }
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -101,11 +80,10 @@ final class MainView: UIView {
         offersCollectionView.contentInset.bottom = buttonHeight + 40
     }
     
-    func configureNavigationBar() {
-        let bar = mainViewController?.navigationController?.navigationBar
-        bar?.topItem?.leftBarButtonItem = stopButton
-        bar?.barTintColor = .white
-        bar?.shadowImage = UIImage()
+    func configureNavigationBar(bar: UINavigationBar) {
+        bar.topItem?.leftBarButtonItem = stopButton
+        bar.barTintColor = .white
+        bar.shadowImage = UIImage()
     }
     
     func configureSelectionButton(offerIsSelected: Bool, actionTitle: String,

@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         let window = UIWindow(frame: UIScreen.main.bounds)
-        let networkService = APIController.service
+        let networkService = NetworkService.service
         let viewController = MainViewContoller(networkManager: networkService)
         window.rootViewController = UINavigationController(rootViewController: viewController)
         window.makeKeyAndVisible()
