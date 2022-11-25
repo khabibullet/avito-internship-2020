@@ -25,9 +25,9 @@
 # Implementation
 <br />
 
-| Implementation ||Reference |
-|:--:|:--:|:--:|
-| <img src="readme/avito.gif" height="600" border="3px" style="border-color:gray"/> | |<img src="readme/screen.png" height="600" border="3px" style="border-color:gray"/> |
+| Implementation |Reference |
+|:--:|:--:|
+| <img src="readme/avito.gif" height="500" border="3px" style="border-color:gray"/> |<img src="readme/screen.png" height="500" border="3px" style="border-color:gray"/> |
 <br />
 
 ## Features
