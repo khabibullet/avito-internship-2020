@@ -21,20 +21,15 @@
 + Using UICollectionView
 + VIPER
 <br />
-<br />
+
 # Implementation
 <br />
 
-<style>
-td, th {
-   border: none!important;
-}
-</style>
 | Implementation ||Reference |
 |:--:|:--:|:--:|
 | <img src="readme/avito.gif" height="600" border="3px" style="border-color:gray"/> | |<img src="readme/screen.png" height="600" border="3px" style="border-color:gray"/> |
 <br />
-<br />
+
 ## Features
 - UICollectionView
 - MVC
