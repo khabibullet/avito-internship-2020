@@ -75,15 +75,19 @@ final class MainView: UIView {
         bar.shadowImage = UIImage()
     }
     
-    public func configureSelectionButton(offerIsSelected: Bool, actionTitle: String,
-        selectedActionTitle: String) {
-        
-        if offerIsSelected {
-            selectionButton.setTitle(selectedActionTitle, for: .normal)
+    enum ButtonAppearance {
+        case light
+        case dark
+    }
+    
+    public func configureSelectionButton(
+        appearance: ButtonAppearance, title: String
+    ) {
+        selectionButton.setTitle(title, for: .normal)
+        if appearance == .dark {
             selectionButton.setTitleColor(.white, for: .normal)
             selectionButton.backgroundColor = UIColor.Avito.blue
         } else {
-            selectionButton.setTitle(actionTitle, for: .normal)
             selectionButton.setTitleColor(UIColor.Avito.blue, for: .normal)
             selectionButton.backgroundColor = UIColor.Avito.lightBlue
         }

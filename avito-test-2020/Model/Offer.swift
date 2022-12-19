@@ -7,6 +7,8 @@
 
 import Foundation
 
+typealias Offers = [Offer]
+
 struct Offer: Codable {
     var id, title: String
     let description: String?

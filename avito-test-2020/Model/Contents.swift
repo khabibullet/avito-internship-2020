@@ -10,7 +10,7 @@ import Foundation
 struct Contents: Codable {
     let title: String
     let actionTitle, selectedActionTitle: String
-    var offers: [Offer]
+    var offers: Offers
 
     enum CodingKeys: String, CodingKey {
         case title, actionTitle, selectedActionTitle

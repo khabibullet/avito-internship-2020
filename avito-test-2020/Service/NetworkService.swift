@@ -8,25 +8,21 @@
 import UIKit
 
 protocol DataFetchable {
-    func fetchInitialData(completion: @escaping (_ contents: Contents?,
-        _ error: String) -> Void)
-    
-    func getRawData(iconURL: String, completion: @escaping
-        (_ data: Data?) -> Void)
+    func fetchDataFromUrl<T: Decodable>(
+        urlString: String,
+        completion: @escaping (_ contents: T?, _ error: String) -> Void
+    )
 }
 
 class NetworkService: DataFetchable {
     private init() { }
     static let service = NetworkService()
     
-    private static let initialURL = """
-    https://raw.githubusercontent.com/\
-    khabibullet/avito-test-2020/master/readme/result.json
-    """
-    
-    func fetchInitialData(completion: @escaping (_ contents: Contents?,
-        _ error: String) -> Void) {
-        guard let url = URL(string: NetworkService.initialURL) else {
+    func fetchDataFromUrl<T: Decodable>(
+        urlString: String,
+        completion: @escaping (_ data: T?, _ error: String) -> Void
+    ) {
+        guard let url = URL(string: urlString) else {
             completion(nil, "Invalid URL")
             return
         }
@@ -37,20 +33,15 @@ class NetworkService: DataFetchable {
                 return
             }
             do {
-                let response = try JSONDecoder().decode(Response.self, from: data!)
-                completion(response.contents, "")
+                if let data = data, T.self == Data.self {
+                    completion(data as? T, "")
+                } else {
+                    let data = try JSONDecoder().decode(T.self, from: data!)
+                    completion(data, "")
+                }
             } catch {
                 completion(nil, error.localizedDescription)
             }
         }.resume()
-    }
-    
-    
-    func getRawData(iconURL: String, completion: @escaping
-        (_ data: Data?) -> Void) {
-        guard let url = URL(string: iconURL) else { return }
-        if let data = try? Data(contentsOf: url) {
-            completion(data)
-        }
     }
 }
