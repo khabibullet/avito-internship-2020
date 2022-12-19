@@ -14,29 +14,28 @@ public enum LoadStatus {
 
 class OffersScreenContents: NSObject {
     
-    private let initialUrl = """
-    https://raw.githubusercontent.com/\
-    khabibullet/avito-test-2020/master/readme/result.json
-    """
-    
     let networkManager: DataFetchable
     weak var viewController: MainViewContoller?
     
-    private var contents: Contents?
-    private var currentSelectedOfferId: Int? {
+    private var offers: Offers = []
+    private var headTitle: String = ""
+    private var actionTitle: String = ""
+    private var selectedActionTitle: String = ""
+    
+    private var currentSelectedOfferId: Int? = nil {
         didSet {
             if let oldValue = oldValue {
-                contents?.offers[oldValue].isSelected = false
+                offers[oldValue].isSelected = false
             }
             if let newValue = currentSelectedOfferId {
-                contents?.offers[newValue].isSelected = true
+                offers[newValue].isSelected = true
             }
         }
     }
     
     init(networkManager: DataFetchable) {
         self.networkManager = networkManager
-        self.currentSelectedOfferId = nil
+        
     }
     
     public func getCurrentSelectedOfferId() -> Int? {
@@ -48,26 +47,26 @@ class OffersScreenContents: NSObject {
     }
  
     public func countOffers() -> Int? {
-        return contents?.offers.count
+        return offers.count
     }
     
     public func getOffer(id: Int) -> Offer? {
-        return contents?.offers[id]
+        return offers[id]
     }
     
     public func getTitle() -> String {
-        return contents?.title ?? ""
+        return headTitle
     }
     
     public func getOfferTitle(id: Int) -> String {
-        return contents?.offers[id].title ?? ""
+        return offers[id].title
     }
     
     public func getActionTitle() -> String {
         if currentSelectedOfferId != nil {
-            return contents?.selectedActionTitle ?? ""
+            return selectedActionTitle
         } else {
-            return contents?.actionTitle ?? ""
+            return actionTitle
         }
     }
     
@@ -76,8 +75,7 @@ class OffersScreenContents: NSObject {
     ) {
         self.viewController = viewController
         loadContents()
-        guard contents != nil else {
-            print("contents appear to be nil")
+        guard offers.isEmpty != true else {
             closure(.failure)
             return
         }
@@ -87,18 +85,38 @@ class OffersScreenContents: NSObject {
     }
     
     public func setCheckmarksUnchecked() {
-        guard contents != nil else { return }
-        for (index, _) in contents!.offers.enumerated() {
-            contents!.offers[index].isSelected = false
+        guard offers.isEmpty != true else { return }
+        
+        for (index, _) in offers.enumerated() {
+            offers[index].isSelected = false
         }
     }
     
+    public func getInitialURL() -> String {
+        guard let path = Bundle.main.path(
+            forResource: "Info", ofType: ".plist"
+        ) else { return "" }
+        
+        guard let dictionary = NSDictionary(
+            contentsOfFile: path
+        ) else { return "" }
+        
+        guard let initialURL = dictionary.object(forKey: "Initial URL")
+            as? String else { return "" }
+        
+        return initialURL
+    }
+    
     private func loadContents() {
+        let initialUrl = getInitialURL()
         let semaphore = DispatchSemaphore(value: 0)
         networkManager.fetchDataFromUrl(urlString: initialUrl) {
             (data: Response?, error: String)  in
             if let response = data {
-                self.contents = response.contents
+                self.offers = response.result.list
+                self.headTitle = response.result.title
+                self.actionTitle = response.result.actionTitle
+                self.selectedActionTitle = response.result.selectedActionTitle
             } else {
                 self.viewController?.presentAlert(
                     title: "Error", message: error,
@@ -111,15 +129,15 @@ class OffersScreenContents: NSObject {
     }
     
     private func loadIcons() {
-        guard contents?.offers != nil else { return }
+        guard offers.isEmpty != true else { return }
 
         let group = DispatchGroup()
-        for (index, _) in contents!.offers.enumerated() {
+        for (index, _) in offers.enumerated() {
             group.enter()
             self.networkManager.fetchDataFromUrl(
-                urlString: self.contents!.offers[index].icon.url
+                urlString: self.offers[index].icon.url
             ) { (data: Data?, error: String)  in
-                self.contents!.offers[index].icon.image = data
+                self.offers[index].icon.image = data
                 group.leave()
             }
         }
