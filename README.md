@@ -36,3 +36,4 @@
 - Alert in case of network errors
 - iOS 12+ support
 - SwiftLint pod
+- KVO/KVC-like property observing
