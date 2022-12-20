@@ -1,0 +1,12 @@
+line_length:
+- 80 # warning
+
+vertical_whitespace:
+  max_empty_lines: 2 
+
+identifier_name:
+- 1 # warning
+
+disabled_rules:
+- trailing_whitespace
+- identifier_name

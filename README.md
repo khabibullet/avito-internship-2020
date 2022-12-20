@@ -31,12 +31,8 @@
 <br />
 
 ## Features
-- UICollectionView
-- MVC
-- Network service dependency injection
-- Checkmarks state observation
+- UICollectionView with custom cells
+- MVC-N design pattern
 - Alert in case of network errors
 - iOS 12+ support
-
-
-
+- SwiftLint pod

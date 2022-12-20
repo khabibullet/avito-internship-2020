@@ -17,7 +17,7 @@ protocol DataFetchable {
 class NetworkService: DataFetchable {
     private init() { }
     static let service = NetworkService()
-    
+
     func fetchDataFromUrl<T: Decodable>(
         urlString: String,
         completion: @escaping (_ data: T?, _ error: String) -> Void
@@ -26,8 +26,8 @@ class NetworkService: DataFetchable {
             completion(nil, "Invalid URL")
             return
         }
-        
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
+
+        URLSession.shared.dataTask(with: url) { (data, _, error) in
             if let error = error {
                 completion(nil, error.localizedDescription)
                 return

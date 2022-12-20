@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1CC84375B8D1EC3FE35C190E /* Pods_avito_test_2020.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A21FC41FB34BC72BDBC927 /* Pods_avito_test_2020.framework */; };
 		3F301E64292D16940099E00F /* String+Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F301E63292D16940099E00F /* String+Frame.swift */; };
 		3F301E66292D171B0099E00F /* UIImage+Inset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F301E65292D171A0099E00F /* UIImage+Inset.swift */; };
 		3F301E68292D17D50099E00F /* String+Attribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F301E67292D17D50099E00F /* String+Attribute.swift */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0209E81036E7B77791665A5D /* Pods-avito-test-2020.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-avito-test-2020.release.xcconfig"; path = "Target Support Files/Pods-avito-test-2020/Pods-avito-test-2020.release.xcconfig"; sourceTree = "<group>"; };
 		3F301E63292D16940099E00F /* String+Frame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Frame.swift"; sourceTree = "<group>"; };
 		3F301E65292D171A0099E00F /* UIImage+Inset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Inset.swift"; sourceTree = "<group>"; };
 		3F301E67292D17D50099E00F /* String+Attribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Attribute.swift"; sourceTree = "<group>"; };
@@ -47,6 +49,8 @@
 		4199D91C290981720022907F /* OfferCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferCollectionViewCell.swift; sourceTree = "<group>"; };
 		4199D91E290993CD0022907F /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		41FD37AC290AE62100772212 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		83CC0F7EAB1C975DD258D09A /* Pods-avito-test-2020.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-avito-test-2020.debug.xcconfig"; path = "Target Support Files/Pods-avito-test-2020/Pods-avito-test-2020.debug.xcconfig"; sourceTree = "<group>"; };
+		84A21FC41FB34BC72BDBC927 /* Pods_avito_test_2020.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_avito_test_2020.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1CC84375B8D1EC3FE35C190E /* Pods_avito_test_2020.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +91,8 @@
 			children = (
 				4199D90329092E430022907F /* avito-test-2020 */,
 				4199D90229092E430022907F /* Products */,
+				6B4749790F7B2785ECAEDF57 /* Pods */,
+				6917E073222EA98A4C993B4E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -158,6 +165,23 @@
 			path = Core;
 			sourceTree = "<group>";
 		};
+		6917E073222EA98A4C993B4E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				84A21FC41FB34BC72BDBC927 /* Pods_avito_test_2020.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6B4749790F7B2785ECAEDF57 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				83CC0F7EAB1C975DD258D09A /* Pods-avito-test-2020.debug.xcconfig */,
+				0209E81036E7B77791665A5D /* Pods-avito-test-2020.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -165,6 +189,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4199D91529092E450022907F /* Build configuration list for PBXNativeTarget "avito-test-2020" */;
 			buildPhases = (
+				11976AB4B9A4FCAB476E164A /* [CP] Check Pods Manifest.lock */,
+				3F51209C295220B40057EF86 /* ShellScript */,
 				4199D8FD29092E430022907F /* Sources */,
 				4199D8FE29092E430022907F /* Frameworks */,
 				4199D8FF29092E430022907F /* Resources */,
@@ -222,6 +248,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		11976AB4B9A4FCAB476E164A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-avito-test-2020-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3F51209C295220B40057EF86 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4199D8FD29092E430022907F /* Sources */ = {
@@ -382,6 +450,7 @@
 		};
 		4199D91629092E450022907F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 83CC0F7EAB1C975DD258D09A /* Pods-avito-test-2020.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -415,6 +484,7 @@
 		};
 		4199D91729092E450022907F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0209E81036E7B77791665A5D /* Pods-avito-test-2020.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

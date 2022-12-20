@@ -6,12 +6,14 @@
 //
 
 import UIKit
-
+    
 extension String {
-    func attributed(by attributes: [NSAttributedString.Key : Any]) -> NSMutableAttributedString {
+    func attributed(
+        by attributes: [NSAttributedString.Key: Any]
+    ) -> NSMutableAttributedString {
         let attributedString = NSMutableAttributedString(string: self)
-        let range = NSMakeRange(0, attributedString.length)
-        attributedString.addAttributes(attributes, range: range)
+        let range = 0...attributedString.length - 1
+        attributedString.addAttributes(attributes, range: NSRange(range))
         return attributedString
     }
 }
